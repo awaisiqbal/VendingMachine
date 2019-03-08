@@ -1,4 +1,4 @@
-This program is my approach of the Vending Machine problema.
+This program is my approach of the Vending Machine problem.
 
 ## Statement:
 ### You need to design a Vending Machine which
