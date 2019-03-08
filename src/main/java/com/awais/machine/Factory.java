@@ -3,6 +3,7 @@ package com.awais.machine;
 import com.awais.machine.interfaces.CashManager;
 import com.awais.machine.interfaces.VendingMachine;
 import com.awais.machine.interfaces.impl.CashManagerImpl;
+import com.awais.machine.interfaces.impl.ClassicStrategy;
 import com.awais.machine.interfaces.impl.VendingMachineImpl;
 
 /**
@@ -36,7 +37,7 @@ public class Factory {
 	 * @return A new instance of a cash manager
 	 */
 	public static final CashManager createCashManager() {
-		return new CashManagerImpl();
+		return new CashManagerImpl(new ClassicStrategy());
 	}
 
 }

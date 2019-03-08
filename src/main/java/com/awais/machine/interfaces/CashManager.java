@@ -2,6 +2,7 @@ package com.awais.machine.interfaces;
 
 import java.util.Collection;
 
+import com.awais.machine.exceptions.NotEnoughChangeException;
 import com.awais.machine.models.Coin;
 
 public interface CashManager {
@@ -53,5 +54,14 @@ public interface CashManager {
 	 * @return Value of all the coins
 	 */
 	public long getCurrentMoney();
+
+	/**
+	 * Calculate change
+	 * 
+	 * @param moneyLeftToConvert
+	 * @return
+	 * @throws NotEnoughChangeException
+	 */
+	public Collection<Coin> calculateChange(long moneyLeftToConvert) throws NotEnoughChangeException;
 
 }

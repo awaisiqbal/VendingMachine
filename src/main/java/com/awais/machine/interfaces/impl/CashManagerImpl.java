@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import com.awais.machine.exceptions.NotEnoughChangeException;
 import com.awais.machine.interfaces.CashManager;
+import com.awais.machine.interfaces.ChangeStrategy;
 import com.awais.machine.models.Coin;
 import com.awais.machine.utils.Stock;
 
@@ -15,7 +17,13 @@ public class CashManagerImpl implements CashManager {
 	 */
 	private Stock<Coin> coinsInStock;
 
-	public CashManagerImpl() {
+	/**
+	 * Strategy to obtain the change
+	 */
+	private ChangeStrategy changeStrategy;
+
+	public CashManagerImpl(ChangeStrategy strategy) {
+		this.changeStrategy = strategy;
 		coinsInStock = new Stock<>();
 		Arrays.stream(Coin.values()).forEach(c -> coinsInStock.initializeKey(c));
 	}
@@ -60,6 +68,11 @@ public class CashManagerImpl implements CashManager {
 			sum += (entry.getKey().getValue() * entry.getValue());
 		}
 		return sum;
+	}
+
+	@Override
+	public Collection<Coin> calculateChange(long moneyLeftToConvert) throws NotEnoughChangeException {
+		return changeStrategy.calculateChange(moneyLeftToConvert, coinsInStock);
 	}
 
 }

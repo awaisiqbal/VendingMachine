@@ -1,6 +1,5 @@
 package com.awais.machine.interfaces.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -151,57 +150,10 @@ public class VendingMachineImpl implements VendingMachine {
 	 *                                  convert all the value
 	 */
 	private Collection<Coin> calculateChange(final long changeToReturn) throws NotEnoughChangeException {
-		Collection<Coin> coinsToReturn = new ArrayList<>();
-
 		long moneyLeftToConvert = changeToReturn;
-
-		// while the money left is not 0, try to get a coin from the biggest to the
-		// smallest coin
-		while (moneyLeftToConvert > 0) {
-			if (checkCoinAvailabity(moneyLeftToConvert, Coin.TWO_EURO)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.TWO_EURO);
-			} else if (checkCoinAvailabity(moneyLeftToConvert, Coin.ONE_EURO)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.ONE_EURO);
-			} else if (checkCoinAvailabity(moneyLeftToConvert, Coin.FIFTY_CENTS)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.FIFTY_CENTS);
-			} else if (checkCoinAvailabity(moneyLeftToConvert, Coin.TWENTY_CENTS)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.TWENTY_CENTS);
-			} else if (checkCoinAvailabity(moneyLeftToConvert, Coin.TEN_CENTS)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.TEN_CENTS);
-			} else if (checkCoinAvailabity(moneyLeftToConvert, Coin.FIVE_CENTS)) {
-				moneyLeftToConvert = collectReturnAndRemoveCoin(coinsToReturn, moneyLeftToConvert, Coin.FIVE_CENTS);
-			} else {
-				throw new NotEnoughChangeException("Not enough change.");
-			}
-		}
-		return coinsToReturn;
-	}
-
-	/**
-	 * Add the given coin in to the coins to be returned, reduce money left with the
-	 * given coin value and finally remove that coin from the stock
-	 * 
-	 * @param coinsToReturn
-	 * @param moneyLeftToConvert
-	 * @param coin
-	 * @return Money
-	 */
-	private long collectReturnAndRemoveCoin(Collection<Coin> coinsToReturn, final long moneyLeftToConvert,
-			final Coin coin) {
-		coinsToReturn.add(coin);
-		cashModule.redraw(coin);
-		return moneyLeftToConvert - coin.getValue();
-	}
-
-	/**
-	 * This method checks if the cash module contains that coin to be redraw
-	 * 
-	 * @param moneyLeftToConvert Money left to be returned
-	 * @param coin               Coin to check
-	 * @return True is the module has the coin available
-	 */
-	private boolean checkCoinAvailabity(final long moneyLeftToConvert, final Coin coin) {
-		return moneyLeftToConvert >= coin.getValue() && cashModule.containsMoreThenOne(coin);
+		Collection<Coin> coinToReturn = cashModule.calculateChange(moneyLeftToConvert);
+		cashModule.redraw(coinToReturn);
+		return coinToReturn;
 	}
 
 	/**
